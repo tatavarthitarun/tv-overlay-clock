@@ -50,7 +50,21 @@
   .tree{color:#cfe0ff}
   .tree b{color:var(--accent)}
   a{color:var(--accent)}
-  footer{margin-top:50px;color:var(--muted);font-size:13px;text-align:center}
+  footer{margin-top:50px}
+  .signoff{border:1px solid var(--line);border-radius:16px;padding:26px 22px 22px;text-align:center;
+    background:radial-gradient(120% 140% at 50% 0%, rgba(217,119,87,.10), transparent 60%),var(--panel);position:relative;overflow:hidden}
+  .balloon{position:absolute;top:14px;font-size:22px;animation:float 4.5s ease-in-out infinite}
+  .balloon.l{left:26px}
+  .balloon.r{right:26px;animation-delay:1.4s}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-9px) rotate(4deg)}}
+  .sig-tagline{font-size:17px;color:var(--ink);margin-bottom:4px}
+  .sig-tagline em{color:var(--accent);font-style:italic}
+  .sig-tools{display:inline-flex;align-items:center;gap:9px;margin:14px 0 10px;color:var(--muted);font-size:13.5px}
+  .claude-logo{width:26px;height:26px;flex:none}
+  .sig-tools b{color:#e9a084}
+  .sig-mark{font-size:20px;letter-spacing:2px;margin-top:6px}
+  .sig-sub{color:var(--muted);font-size:12px;margin-top:10px}
+  @media(prefers-reduced-motion:reduce){.balloon{animation:none}}
 </style>
 </head>
 <body>
@@ -216,7 +230,38 @@ adb uninstall com.tatav.tvclock             <span class="c"># remove it</span></
             ├── values/strings.xml
             └── drawable/banner.xml     <span class="c"># TV launcher banner</span></pre>
 
-  <footer>Built &amp; verified from the command line with Claude Code — no Android Studio involved.</footer>
+  <footer>
+    <div class="signoff">
+      <span class="balloon l">🎈</span>
+      <span class="balloon r">🎈</span>
+
+      <div class="sig-tagline">Built with ❤️🎈 — <em>"Build with heart. Rise with purpose."</em></div>
+
+      <div class="sig-tools">
+        <!-- Claude sunburst mark -->
+        <svg class="claude-logo" viewBox="0 0 100 100" role="img" aria-label="Claude">
+          <g fill="#D97757">
+            <rect x="47.5" y="5"  width="5" height="33" rx="2.5"/>
+            <rect x="47.5" y="13" width="5" height="24" rx="2.5" transform="rotate(30 50 50)"/>
+            <rect x="47.5" y="5"  width="5" height="33" rx="2.5" transform="rotate(60 50 50)"/>
+            <rect x="47.5" y="13" width="5" height="24" rx="2.5" transform="rotate(90 50 50)"/>
+            <rect x="47.5" y="5"  width="5" height="33" rx="2.5" transform="rotate(120 50 50)"/>
+            <rect x="47.5" y="13" width="5" height="24" rx="2.5" transform="rotate(150 50 50)"/>
+            <rect x="47.5" y="5"  width="5" height="33" rx="2.5" transform="rotate(180 50 50)"/>
+            <rect x="47.5" y="13" width="5" height="24" rx="2.5" transform="rotate(210 50 50)"/>
+            <rect x="47.5" y="5"  width="5" height="33" rx="2.5" transform="rotate(240 50 50)"/>
+            <rect x="47.5" y="13" width="5" height="24" rx="2.5" transform="rotate(270 50 50)"/>
+            <rect x="47.5" y="5"  width="5" height="33" rx="2.5" transform="rotate(300 50 50)"/>
+            <rect x="47.5" y="13" width="5" height="24" rx="2.5" transform="rotate(330 50 50)"/>
+          </g>
+        </svg>
+        <span>Built with <b>Claude Code</b> on macOS &nbsp;·&nbsp; no Android Studio involved</span>
+      </div>
+
+      <div class="sig-mark">— ❤️🎈</div>
+      <div class="sig-sub">TV Clock · hand-written Kotlin, built &amp; verified from the command line</div>
+    </div>
+  </footer>
 </div>
 </body>
 </html>
