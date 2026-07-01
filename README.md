@@ -2,6 +2,8 @@
 
 A tiny Android TV app that pins the current time to the **top-right corner of the screen, on top of every other app** — launcher, YouTube, Netflix, anything. Built for personal use on a real TV (sideloaded, not a Play Store app).
 
+**[⬇️ Download the APK](https://github.com/tatavarthitarun/tv-overlay-clock/releases/latest)** &nbsp;·&nbsp; **[📖 Illustrated explainer](https://tatavarthitarun.github.io/tv-overlay-clock/EXPLAINER.html)**
+
 ![TV Clock overlay showing over the Google TV home screen](docs/verified-on-emulator.png)
 
 *Verified on a Google TV emulator: the `9:41`-style clock renders over the launcher's content rows.*
@@ -70,8 +72,20 @@ All in `app/src/main/java/com/tatav/tvclock/ClockOverlayService.kt`:
 - **DRM video:** some streaming apps mark their surface "secure"; the system may hide *all* overlays during protected playback, so the clock can briefly disappear there. Everywhere else it stays.
 - Debug-signed sideload for personal use — not intended for the Play Store.
 
-See [`EXPLAINER.html`](EXPLAINER.html) for a full walkthrough.
+## Download
+
+Grab the ready-to-sideload APK from the [**latest release**](https://github.com/tatavarthitarun/tv-overlay-clock/releases/latest), or read the full illustrated walkthrough at the [**live explainer**](https://tatavarthitarun.github.io/tv-overlay-clock/EXPLAINER.html) (also in this repo as [`EXPLAINER.html`](EXPLAINER.html)).
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+---
+
+<div align="center">
+
+*Built with ❤️🎈 — "Build with heart. Rise with purpose."*
+
+**— ❤️🎈**
+
+</div>
