@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 320x180 banner shown in the Android TV launcher -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <!-- Background -->
+    <path
+        android:fillColor="#0D1B3E"
+        android:pathData="M0,0 h320 v180 h-320 z" />
+
+    <!-- Clock face -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M160,90 m-46,0 a46,46 0 1,0 92,0 a46,46 0 1,0 -92,0 z" />
+    <path
+        android:fillColor="#0D1B3E"
+        android:pathData="M160,90 m-38,0 a38,38 0 1,0 76,0 a38,38 0 1,0 -76,0 z" />
+
+    <!-- Hands -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M160,90 L160,62" />
+    <path
+        android:strokeColor="#4FC3F7"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M160,90 L184,90" />
+</vector>

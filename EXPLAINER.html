@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TV Clock — What was built &amp; how to run it</title>
+<style>
+  :root{
+    --bg:#0d1b3e; --panel:#141f3f; --panel2:#1b2a52; --ink:#e8eefc;
+    --muted:#9fb0d8; --accent:#4fc3f7; --good:#5ee6a0; --warn:#ffcf6b; --code:#0a1230;
+    --line:#2a3a66; --kotlin:#a97bff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(160deg,#0a1533,#0d1b3e 40%,#0a1230);
+    color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:40px 22px 80px}
+  header{display:flex;align-items:center;gap:18px;margin-bottom:8px}
+  .badge{width:64px;height:64px;border-radius:16px;background:#0d1b3e;border:2px solid var(--accent);
+    display:flex;align-items:center;justify-content:center;flex:none}
+  .badge svg{width:40px;height:40px}
+  h1{font-size:30px;margin:0}
+  .sub{color:var(--muted);margin:2px 0 0}
+  h2{font-size:21px;margin:38px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h3{font-size:16px;margin:22px 0 6px;color:var(--accent)}
+  p{margin:10px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  code{background:var(--code);padding:2px 6px;border-radius:6px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:13.5px;color:#cfe0ff}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;
+    font-family:"SF Mono",Menlo,Consolas,monospace;font-size:13.5px;line-height:1.55;color:#cfe0ff;margin:10px 0}
+  pre .c{color:#7f8fb8}
+  pre .k{color:var(--accent)}
+  .step{display:flex;gap:14px;margin:16px 0}
+  .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#04121f;
+    font-weight:700;display:flex;align-items:center;justify-content:center}
+  .step h3{margin:2px 0 4px}
+  .pill{display:inline-block;font-size:12px;padding:2px 10px;border-radius:20px;border:1px solid var(--line);
+    color:var(--muted);margin-right:6px;margin-bottom:4px}
+  .pill.kt{border-color:var(--kotlin);color:#c9adff}
+  .ok{color:var(--good)}
+  .note{border-left:3px solid var(--warn);background:rgba(255,207,107,.08);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0}
+  .note b{color:var(--warn)}
+  .proof{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:14px 0}
+  .proof img{display:block;width:100%}
+  .proof .cap{background:var(--panel2);padding:10px 14px;font-size:13.5px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600}
+  .tree{color:#cfe0ff}
+  .tree b{color:var(--accent)}
+  a{color:var(--accent)}
+  footer{margin-top:50px;color:var(--muted);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="badge">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff" stroke-width="6"/>
+        <line x1="50" y1="50" x2="50" y2="26" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        <line x1="50" y1="50" x2="70" y2="50" stroke="#4fc3f7" stroke-width="6" stroke-linecap="round"/></svg>
+    </div>
+    <div>
+      <h1>TV Clock — always-on overlay</h1>
+      <p class="sub">An Android TV / Google TV app that pins the current time to the top-right corner, over every other app.</p>
+    </div>
+  </header>
+
+  <div class="card">
+    <span class="pill kt">Kotlin</span>
+    <span class="pill">Package <code>com.tatav.tvclock</code></span>
+    <span class="pill">Gradle 8.9 · AGP 8.7.2 · Kotlin 1.9.24 · JDK 21</span>
+    <span class="pill">minSdk 21 · targetSdk 33 · compileSdk 34</span>
+    <span class="pill ok">Build: SUCCESS ✓</span>
+    <span class="pill ok">Verified on Android TV emulator ✓</span>
+  </div>
+
+  <h2>0 · Proof it works</h2>
+  <p>
+    Built the APK, spun up a Google TV emulator (the <code>android-34/android-tv</code> arm64 image you already had),
+    installed the app, granted the overlay permission, and pressed <b>Home</b>. The clock renders <em>on top of the
+    Google TV launcher</em> — exactly the goal:
+  </p>
+  <div class="proof">
+    <img src="docs/verified-on-emulator.png" alt="TV Clock overlay showing 11:14 PM over the Google TV home screen">
+    <div class="cap">Top-right corner: <b>11:14&nbsp;PM</b> in a translucent pill, drawn over the launcher's content rows.
+      The foreground service reported <code>isForeground=true</code> and stayed alive after leaving the app.</div>
+  </div>
+
+  <h2>1 · Kotlin or Java? — Kotlin is totally fine</h2>
+  <p>
+    There is <b>no Java-only restriction</b> on Android TV or Google TV. They run the same Android runtime as phones,
+    and Kotlin compiles to the same bytecode Java does. This app is written in Kotlin — three small files. Anything
+    you can do on TV in Java you can do in Kotlin and vice-versa; the SDK, Leanback, WindowManager, services — all
+    identical.
+  </p>
+
+  <h2>2 · The core idea</h2>
+  <p>
+    A normal app can only draw inside its own window, so it disappears the moment you switch to Netflix or YouTube.
+    To float something <em>on top of everything</em>, Android has one mechanism: a <b>system overlay window</b>.
+    You ask the <code>WindowManager</code> to add a view of type <code>TYPE_APPLICATION_OVERLAY</code>, which the
+    system composites above other apps. That view is a plain <code>TextView</code> showing the time, refreshed every
+    second.
+  </p>
+  <p>
+    To keep that window alive after you leave the app, it's owned by a <b>foreground service</b> (not an Activity).
+    Foreground services survive app-switching and show a small notification so the system won't kill them.
+  </p>
+
+  <h2>3 · How the pieces fit together</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>MainActivity.kt</h3>
+      The launcher tile. Does almost nothing: checks the overlay permission and starts the service, or — if the
+      permission is missing — prints the exact ADB command to grant it. The clock is <em>not</em> drawn here.
+    </div>
+    <div class="card">
+      <h3>ClockOverlayService.kt</h3>
+      A foreground service. On start it adds the <code>TextView</code> to the <code>WindowManager</code> at
+      <code>Gravity.TOP&nbsp;or&nbsp;END</code> and ticks every second. Flags <code>NOT_FOCUSABLE</code> +
+      <code>NOT_TOUCHABLE</code> mean it never steals remote-control input.
+    </div>
+    <div class="card">
+      <h3>BootReceiver.kt</h3>
+      Listens for <code>BOOT_COMPLETED</code> and restarts the overlay after the TV reboots — so you never have to
+      open the app again once it's set up.
+    </div>
+    <div class="card">
+      <h3>Manifest / Leanback</h3>
+      Declares the <code>LEANBACK_LAUNCHER</code> intent + a <code>banner</code> so the app appears on the TV home
+      row, and requests <code>SYSTEM_ALERT_WINDOW</code>, <code>FOREGROUND_SERVICE</code>,
+      <code>RECEIVE_BOOT_COMPLETED</code>.
+    </div>
+  </div>
+
+  <h2>4 · What I set up on this machine</h2>
+  <table>
+    <tr><th>Item</th><th>Detail</th></tr>
+    <tr><td>Android SDK</td><td>Already present at <code>~/Library/Android/sdk</code> (platforms 34–36, build-tools 34–36, and an <code>android-34/android-tv</code> arm64 system image).</td></tr>
+    <tr><td>JDK</td><td>You had only JDK 23 &amp; 25 — both too new for the Android Gradle Plugin. Installed <b>OpenJDK 21</b> (LTS) via Homebrew: <code>brew install openjdk@21</code>.</td></tr>
+    <tr><td>Gradle wrapper</td><td>Pinned <b>Gradle 8.9</b> (<code>./gradlew</code>) so builds are reproducible regardless of the system Gradle (which was 9.0, too new for AGP 8.7).</td></tr>
+    <tr><td>Emulator (AVD)</td><td>Created <code>tv_clock</code> from the TV image and booted it to verify the overlay live.</td></tr>
+    <tr><td>Project</td><td>Hand-written from scratch — no Android Studio. Pure framework, <b>zero third-party dependencies</b>.</td></tr>
+  </table>
+
+  <h2>5 · Try it on the emulator</h2>
+  <pre><span class="c"># create a TV AVD from the image you already have (once)</span>
+echo no | ~/Library/Android/sdk/cmdline-tools/latest/bin/avdmanager create avd \
+  -n tv_clock -k "system-images;android-34;android-tv;arm64-v8a" -d tv_1080p
+
+<span class="c"># boot it</span>
+~/Library/Android/sdk/emulator/emulator -avd tv_clock -gpu auto &amp;
+
+<span class="c"># build + install + grant + launch (the emulator counts as a "device")</span>
+./deploy.sh</pre>
+
+  <h2>6 · Deploy to your real TV</h2>
+  <div class="step"><div class="num">1</div><div>
+    <h3>Enable Developer options + ADB on the TV</h3>
+    On the TV: <b>Settings → System → About → </b> click <b>Build</b> 7 times. Then in <b>Developer options</b> turn
+    on <b>USB debugging</b> / <b>Network debugging</b>. Note the TV's IP under <b>Settings → Network</b>.
+  </div></div>
+  <div class="step"><div class="num">2</div><div>
+    <h3>One command does the rest</h3>
+    <pre>./deploy.sh <span class="k">192.168.1.50</span>    <span class="c"># your TV's IP</span></pre>
+    It connects over the network, installs the APK, grants the overlay permission, and launches the app. Accept the
+    <em>"Allow debugging?"</em> prompt on the TV the first time.
+  </div></div>
+
+  <div class="note"><b>The one non-obvious step (baked into <code>deploy.sh</code>):</b> Android TV usually has
+    <em>no on-screen setting</em> for "Draw over other apps", so the normal permission dialog never appears. It's
+    granted over ADB instead:
+    <pre style="margin:8px 0 0">adb shell appops set com.tatav.tvclock SYSTEM_ALERT_WINDOW allow</pre>
+    Without this, the app runs but shows no clock.</div>
+
+  <h2>7 · Handy commands</h2>
+  <pre><span class="c"># rebuild the APK (JDK 21 required for the build)</span>
+JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./gradlew assembleDebug
+
+adb shell am force-stop com.tatav.tvclock   <span class="c"># stop the clock</span>
+adb uninstall com.tatav.tvclock             <span class="c"># remove it</span></pre>
+
+  <h2>8 · Good to know / limits</h2>
+  <div class="note"><b>DRM / secure video:</b> A few streaming apps mark their video surface "secure". Over those,
+    the system may hide <em>all</em> overlays — so the clock can briefly vanish during protected playback. Over the
+    launcher, menus, and most apps it stays visible.</div>
+  <ul>
+    <li><b>12h vs 24h:</b> Time format is <code>"h:mm a"</code> (e.g. 9:41&nbsp;PM) in
+      <code>ClockOverlayService.kt</code>. Change it to <code>"HH:mm"</code> for 24-hour.</li>
+    <li><b>Position / size / colour:</b> tweak <code>params.x/y</code>, <code>setTextSize</code>,
+      <code>setBackgroundColor</code> in the same file, then rebuild.</li>
+    <li><b>Personal use:</b> this is a debug-signed sideload — perfect for your own TV, not intended for Play Store.</li>
+  </ul>
+
+  <h2>9 · Project layout</h2>
+  <pre class="tree">Projects/tv-overlay-clock/
+├── <b>build.gradle</b>            <span class="c"># AGP 8.7.2 + Kotlin 1.9.24 plugins</span>
+├── <b>settings.gradle</b>         <span class="c"># google() + mavenCentral() repos</span>
+├── gradle.properties / local.properties
+├── <b>deploy.sh</b>               <span class="c"># build + install + grant + launch</span>
+├── gradlew / gradle/…       <span class="c"># pinned Gradle 8.9 wrapper</span>
+├── docs/verified-on-emulator.png
+├── <b>EXPLAINER.html</b>          <span class="c"># this file</span>
+└── app/
+    ├── build.gradle         <span class="c"># sdk levels, Kotlin jvmTarget 17</span>
+    └── src/main/
+        ├── <b>AndroidManifest.xml</b>
+        ├── java/com/tatav/tvclock/
+        │   ├── <b>MainActivity.kt</b>          <span class="c"># launcher; starts service</span>
+        │   ├── <b>ClockOverlayService.kt</b>   <span class="c"># the overlay itself</span>
+        │   └── <b>BootReceiver.kt</b>          <span class="c"># restart on reboot</span>
+        └── res/
+            ├── values/strings.xml
+            └── drawable/banner.xml     <span class="c"># TV launcher banner</span></pre>
+
+  <footer>Built &amp; verified from the command line with Claude Code — no Android Studio involved.</footer>
+</div>
+</body>
+</html>

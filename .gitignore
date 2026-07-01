@@ -1,0 +1,15 @@
+# Gradle / build output
+.gradle/
+build/
+app/build/
+
+# Machine-specific SDK path (set your own via local.properties or ANDROID_HOME)
+local.properties
+
+# IDE / OS cruft
+*.iml
+.idea/
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
